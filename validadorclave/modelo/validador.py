@@ -1,9 +1,6 @@
-# TODO: Implementa el código del ejercicio aquí
-
 # validador.py
 from abc import ABC, abstractmethod
 
-# validador.py
 class ReglaValidacion(ABC):
     def __init__(self, longitud_esperada):
         self._longitud_esperada = longitud_esperada
@@ -24,3 +21,46 @@ class ReglaValidacion(ABC):
     @abstractmethod
     def es_valida(self, clave):
         pass
+
+class ReglaValidacionGanimedes(ReglaValidacion):
+    def __init__(self):
+        super().__init__(8)  # Longitud esperada de más de 8 caracteres
+
+    def contiene_caracter_especial(self, clave):
+        caracteres_especiales = "@_#$%"
+        return any(c in caracteres_especiales for c in clave)
+
+    def es_valida(self, clave):
+        self._validar_longitud(clave)
+        if not self._contiene_mayuscula(clave):
+            raise ValueError("La clave debe contener al menos una letra mayúscula.")
+        if not self._contiene_minuscula(clave):
+            raise ValueError("La clave debe contener al menos una letra minúscula.")
+        if not self._contiene_numero(clave):
+            raise ValueError("La clave debe contener al menos un número.")
+        if not self.contiene_caracter_especial(clave):
+            raise ValueError("La clave debe contener al menos un carácter especial (@, _, #, $, %).")
+        return True
+
+class ReglaValidacionCalisto(ReglaValidacion):
+    def __init__(self):
+        super().__init__(6)  # Longitud esperada de más de 6 caracteres
+
+    def contiene_calisto(self, clave):
+        count = sum(1 for c in clave if c in "CALISTO")
+        return 2 <= count < len("CALISTO")
+
+    def es_valida(self, clave):
+        self._validar_longitud(clave)
+        if not self._contiene_numero(clave):
+            raise ValueError("La clave debe contener al menos un número.")
+        if not self.contiene_calisto(clave):
+            raise ValueError("La clave debe contener la palabra 'calisto' con al menos dos letras mayúsculas.")
+        return True
+
+class Validador:
+    def __init__(self, regla):
+        self.regla = regla
+
+    def es_valida(self, clave):
+        return self.regla.es_valida(clave)
