@@ -22,7 +22,7 @@ class ReglaValidacion(ABC):
     def es_valida(self, clave):
         pass
 
-class ReglaValidacionGanimedes(ReglaValidacion):
+class ReglaValidacionGanimedes(Regla Validacion):
     def __init__(self):
         super().__init__(8)  # Longitud esperada de más de 8 caracteres
 
@@ -63,4 +63,18 @@ class Validador:
         self.regla = regla
 
     def es_valida(self, clave):
-        return self.regla.es_valida(clave)
+        try:
+            return self.regla.es_valida(clave)
+        except ValueError as e:
+            print(f"Error: {e}")
+            return False
+
+# Ejemplo de uso
+validador_ganimedes = Validador(ReglaValidacionGanimedes())
+validador_calisto = Validador(ReglaValidacionCalisto())
+
+clave_ganimedes = "MiClaveGanimedes123@"
+clave_calisto = "MiClaveCalisto123CALISTO"
+
+print(validador_ganimedes.es_valida(clave_ganimedes))  # Debe imprimir True
+print(validador_calisto.es_valida(clave_calisto))  # Debe imprimir True
