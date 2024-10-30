@@ -22,7 +22,7 @@ class ReglaValidacion(ABC):
     def es_valida(self, clave):
         pass
 
-class ReglaValidacionGanimedes(Regla Validacion):
+class ReglaValidacionGanimedes(Regla, Validacion):
     def __init__(self):
         super().__init__(8)  # Longitud esperada de más de 8 caracteres
 
